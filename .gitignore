@@ -5,6 +5,18 @@ __pycache__/
 
 # C extensions
 *.so
+venv/
+__pycache__/
+*.py[cod]
+
+.env
+backend/.env
+
+.vscode/
+.idea/
+
+*.log
+.DS_Store
 
 # Distribution / packaging
 .Python
@@ -221,3 +233,24 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# StockMaster local backups and temporary files
+backup_before_final_polish/
+frontend_final_files.zip
+
+# Local database exports and credentials
+
+# Local test and temporary files
+test_*.py
+
+
+# Local credential-management scripts
+backend/create_password_sql.py
+backend/generate_hashes.py
+backend/reset_admin.py
+backend/update_passwords.sql
+
+# Database exports
+*.sql.gz
+*.dump
+

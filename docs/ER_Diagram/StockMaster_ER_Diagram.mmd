@@ -1,0 +1,134 @@
+﻿erDiagram
+    ROLES {
+        int role_id PK
+        varchar role_name
+        varchar description
+    }
+    USERS {
+        int user_id PK
+        int role_id FK
+        varchar full_name
+        varchar email
+        varchar password_hash
+        boolean is_active
+    }
+    WAREHOUSES {
+        int warehouse_id PK
+        varchar warehouse_name
+        varchar location
+        varchar contact_number
+    }
+    SUPPLIERS {
+        int supplier_id PK
+        varchar supplier_name
+        varchar contact_person
+        varchar email
+        varchar phone
+        varchar address
+    }
+    CATEGORIES {
+        int category_id PK
+        varchar category_name
+        varchar description
+    }
+    PRODUCTS {
+        int product_id PK
+        int category_id FK
+        varchar sku
+        varchar product_name
+        decimal unit_price
+        int reorder_level
+    }
+    CUSTOMERS {
+        int customer_id PK
+        varchar customer_name
+        varchar email
+        varchar phone
+        varchar address
+        varchar customer_type
+    }
+    STOCK {
+        int stock_id PK
+        int product_id FK
+        int warehouse_id FK
+        int quantity
+        datetime updated_at
+    }
+    PURCHASE_ORDERS {
+        int purchase_order_id PK
+        int supplier_id FK
+        int warehouse_id FK
+        int created_by FK
+        date order_date
+        date expected_date
+        varchar status
+    }
+    PURCHASE_ORDER_ITEMS {
+        int purchase_item_id PK
+        int purchase_order_id FK
+        int product_id FK
+        int quantity
+        decimal unit_cost
+    }
+    SALES {
+        int sale_id PK
+        int customer_id FK
+        int warehouse_id FK
+        int sold_by FK
+        datetime sale_date
+        varchar status
+    }
+    SALE_ITEMS {
+        int sale_item_id PK
+        int sale_id FK
+        int product_id FK
+        int quantity
+        decimal unit_price
+    }
+    STOCK_MOVEMENTS {
+        int movement_id PK
+        int product_id FK
+        int warehouse_id FK
+        int performed_by FK
+        varchar movement_type
+        int quantity
+        varchar reference_note
+        datetime movement_date
+    }
+    WAREHOUSE_TRANSFERS {
+        int transfer_id PK
+        int source_warehouse_id FK
+        int destination_warehouse_id FK
+        int transferred_by FK
+        datetime transfer_date
+        varchar status
+    }
+    TRANSFER_ITEMS {
+        int transfer_item_id PK
+        int transfer_id FK
+        int product_id FK
+        int quantity
+    }
+
+    ROLES ||--o{ USERS : assigns
+    CATEGORIES ||--o{ PRODUCTS : contains
+    PRODUCTS ||--o{ STOCK : has
+    WAREHOUSES ||--o{ STOCK : stores
+    SUPPLIERS ||--o{ PURCHASE_ORDERS : receives
+    WAREHOUSES ||--o{ PURCHASE_ORDERS : delivers_to
+    USERS ||--o{ PURCHASE_ORDERS : creates
+    PURCHASE_ORDERS ||--o{ PURCHASE_ORDER_ITEMS : includes
+    PRODUCTS ||--o{ PURCHASE_ORDER_ITEMS : ordered
+    CUSTOMERS ||--o{ SALES : places
+    WAREHOUSES ||--o{ SALES : processes
+    USERS ||--o{ SALES : handles
+    SALES ||--o{ SALE_ITEMS : contains
+    PRODUCTS ||--o{ SALE_ITEMS : sold
+    PRODUCTS ||--o{ STOCK_MOVEMENTS : records
+    WAREHOUSES ||--o{ STOCK_MOVEMENTS : tracks
+    USERS ||--o{ STOCK_MOVEMENTS : performs
+    WAREHOUSES ||--o{ WAREHOUSE_TRANSFERS : source
+    WAREHOUSES ||--o{ WAREHOUSE_TRANSFERS : destination
+    USERS ||--o{ WAREHOUSE_TRANSFERS : initiates
+    WAREHOUSE_TRANSFERS ||--o{ TRANSFER_ITEMS : contains
+    PRODUCTS ||--o{ TRANSFER_ITEMS : transferred
